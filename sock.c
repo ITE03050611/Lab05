@@ -1,10 +1,12 @@
 #include<stdio.h>
+#include<string.h>
 #include<sys/socket.h>
 #include<arpa/inet.h>//inet_addr
 int main(int argc , char *argv[])
 {
 	int socket_desc;
 	struct sockaddr_in server;
+	char *message , server_reply[2000];
 	socket_desc = socket(AF_INET , SOCK_STREAM , 0);
 	if (socket_desc == -1)
 	{
@@ -19,5 +21,12 @@ int main(int argc , char *argv[])
 		return 1;
 	}
 	puts("Connected");
+	message = "GET/HTTP/1.1\r\n\r\n";
+	if(recv(socket_desc, server_reply , 2000 , 0)<0)
+	{
+		puts("recv failed");
+	}
+	puts ("Reply received\n");
+	puts (server_reply);
 	return 0;
 }
